@@ -1,6 +1,6 @@
 # Frontend con redux y Vite
 
-### Para inciar desde 0:
+### Para iniciar desde 0:
 
 Se debe acceder a https://vite.dev/guide/ para copiar el npm  
 `npm install -D vite`  
