@@ -1,73 +1,30 @@
-# React + TypeScript + Vite
+# Frontend con redux y Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Para inciar desde 0:
 
-Currently, two official plugins are available:
+Se debe acceder a https://vite.dev/guide/ para copiar el npm  
+`npm install -D vite`  
+Dentro del cmd se muestran varias opciones. En este caso se utiliza ``Framework`` y ``TypeScripy``  
+Esto crea el template del proyecto, con sus carpetas.  
+Se debe instalar redux dentro del proyecto, utilizando la terminal para ingresar el comando:  
+`npm install @reduxjs/toolkit`  
+Se necesita react redux, el cual se instala facilmente con el comando:  
+`npm install react-redux`
+Lo importante para que funcione este proyecto, es que contenga un API (conexion al backend) un Slice (Administrador de Estados), un store (guardar estados y datos) y mostrarlo en UI.  
+  
+Después de instalar las dependencias, se deben crear varios archivos que se necesitan para el funcionamiento.  
+``habitAPI`` y ``habitSlice``  
+En la api se utiliza para crear la conexión al backend, para que haga solicitudes al backend.  
+Para el Slice, se crean los estados de nuestra aplicación, en este caso, para agregar los habitos a la UI.  
+Se modifica el `main.tsx` para que muestre lo que tenemos en nuestro almacenamiento (store).  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Para forzar que el estado se conecte y muestre lo guardado en el backend, se debe crear un nuevo tsx con la clase, en este caso colocamos habits.tsx para tenerlo mejor identificado.  
+Dentro de este archivo, colocamos una función map, para que recorra la clase habitos, logrando que imprima dentro de la UI todo los habitos pertenecientes a nuestro grupo de arreglo.  
 
-## React Compiler
+Como ultimo paso, debemos modificar la pantalla principal del proyecto y modificarlo, el archivo `App.tsx` es el que contiene el diseño de la página que se muestra en pantalla.  
+Lo importante que se debe cambiar, es importar todos los cambios y métodos que utilizamos para organizar estados, recorrer nuestro arreglo, y mostrar el arreglo. Utilizando dispatch. Indicamos que la página, al cargarse nuevamente, inicie un cambio de estado, que fuerza a una actualización en los datos, creando una petición a nuestro backend, así siempre se mantiene actualizado nuestro UI con todos los cambios que se almacenen desde el backend.  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Inicio rapido del proyecto  
+Para ejecutar el programa, se utiliza el comando:  
+`npm run dev`
