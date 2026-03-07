@@ -21,6 +21,8 @@ export default function Habits({habits}: HabitsProps){
                 {habits.map((habit:Habit) => (
                     <li className="flex items-center justify-between" key={habit._id}>
                         <span className="text-black">{habit.title}</span>
+                        <progress className="w-24" value="50" max="100"></progress>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Hecho</button>
                     </li>
                 ))}
             </ul>
