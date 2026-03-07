@@ -4,4 +4,4 @@ export const fetchHabits = async () => {
         throw new Error("Failed to fetch habits");
     }
     return response.json();
-}
+};
