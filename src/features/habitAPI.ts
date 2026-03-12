@@ -5,3 +5,10 @@ export const fetchHabits = async () => {
     }
     return response.json();
 };
+
+export const markAsDone = async (habitId: string) => {
+    const response = await fetch(`http://localhost:3001/habits/markasdone/${habitId}`, {
+        method: "PATCH",
+    });
+    return response.json();
+};
