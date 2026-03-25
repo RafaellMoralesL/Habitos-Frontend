@@ -1,6 +1,7 @@
+const API_URL = import.meta.env.VITE_API_URL;
 // Peticion o consulta de los habitos con token
 export const fetchHabits = async (token:string) => {
-    const response = await fetch("http://localhost:3001/habits", {
+    const response = await fetch(`${API_URL}habits`, {
         headers: {Authorization: 'Bearer ' +token }
     });
     if (!response.ok) {
@@ -12,7 +13,7 @@ export const fetchHabits = async (token:string) => {
 
 // Marcar habito por id con token
 export const markAsDone = async (habitId: string, token: string) => {
-    const response = await fetch(`http://localhost:3001/habits/markasdone/${habitId}`, {
+    const response = await fetch(`${API_URL}habits/markasdone/${habitId}`, {
         method: "PATCH",
         headers: {Authorization: 'Bearer '+token }
     });
@@ -21,7 +22,7 @@ export const markAsDone = async (habitId: string, token: string) => {
 
 // Consulta para agregar el habito desde el frontend
 export const fetchAddHabit = async (token:string, title:string, description:string) => {
-    const response = await fetch("http://localhost:3001/habits", {
+    const response = await fetch(`${API_URL}habits`, {
         method: 'POST',
         headers: {Authorization: 'Bearer '+token,
             'Content-Type': 'application/json'
