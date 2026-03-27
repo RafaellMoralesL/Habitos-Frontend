@@ -50,8 +50,8 @@ export const markAsDoneThunk = createAsyncThunk("habit/markAsDone", async ({habi
 });
 export const fetchAddHabitThunk = createAsyncThunk("habit/fetchAddHabit", async ({token, title, description}: addHabitThunkParmas) => {
     const response = await fetchAddHabit(token, title, description);
-    const responseJson = await response.json();
-    return responseJson;
+   // const responseJson = await response.json();
+    return response;
 });
 const habitSlice = createSlice({
     name: "habits",
