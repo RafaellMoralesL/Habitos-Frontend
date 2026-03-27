@@ -14,18 +14,10 @@ type Habit = {
     lastUpdate: Date;
 }
 
-type HabitsProps = {
-    habits: Habit[];    
-}
-const handleMarkAsDone = (habitId: string, dispatch: AppDispatch,  token: string) => {
-     dispatch(markAsDoneThunk({ habitId, token }));
-    if (token) {
-        dispatch(fetchHabitsThunk(token));
-    }
-}
-
-export default function Habits({habits}: HabitsProps) {
+export default function Habits() {
     const dispatch = useDispatch<AppDispatch>();
+    // Usar Redux directamente en vez de props
+    const habits = useSelector((state: RootState) => state.habits.habits);
     const { status, error } = useSelector((state: RootState) => state.habits);
     const user = useSelector((state: RootState) => state.user.user);
     const [title, setTitle] = useState('');
@@ -35,12 +27,22 @@ export default function Habits({habits}: HabitsProps) {
         return Math.min((days / 66) * 100, 100);
     };
 
-    const handleAddHabit = () => {
-        if (title && description) {
-            dispatch(fetchAddHabitThunk({ token: user ? user.toString() : '', title, description}));
+    const handleMarkAsDone = async (habitId: string) => {
+        if (user) {
+            await dispatch(markAsDoneThunk({ habitId, token: user.toString() })).unwrap();
+            
+            dispatch(fetchHabitsThunk(user.toString()));
+        }
+    };
+
+    const handleAddHabit = async () => {
+        if (title && description && user) {
+            const token = user.toString();
+            await dispatch(fetchAddHabitThunk({ token, title, description })).unwrap();
+            // Solo hacer fetch después de que se agregó exitosamente
+            dispatch(fetchHabitsThunk(token));
             setTitle('');
             setDescription('');
-            dispatch(fetchHabitsThunk(user ? user.toString() : ''));
         }
     };
     return (
@@ -54,7 +56,7 @@ export default function Habits({habits}: HabitsProps) {
                             <div className="flex items-center space-x-2">
                                 <progress className="w-24" value={calculateProgress(habit.days)} max="100"></progress>
                                 <button className="px-2 py-1 text-sm text-white bg-blue-500 rounded" 
-                                    onClick={() => handleMarkAsDone(habit._id, dispatch, user ? user.toString() : '')}>
+                                    onClick={() => handleMarkAsDone(habit._id)}>
                                     {status[habit._id] === "loading" ? "Processing" : "Mark as Done"}
                                 </button>
                                 {status[habit._id] === "failed" && <span className="text-red-500">{error[habit._id]}</span>}
