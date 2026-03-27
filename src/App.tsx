@@ -18,11 +18,9 @@ function App() {
     console.log("Token from cookie", token);
     if (token) {
       dispatch(addUser(token));
+      dispatch(fetchHabitsThunk(token.toString()));
     }
-    if (user) {
-      dispatch(fetchHabitsThunk(user.toString()));
-    }
-  }, [dispatch, user]);
+  }, [dispatch]);
   const handleLogin = () => {
     dispatch(fetchLoginUserThunk({ username, password}));
   };
