@@ -71,7 +71,7 @@ function App() {
                 </div>
               </div>
         )}
-        {user && <Habits habits={habits} />}
+        {user ? <Habits /> :null}
   </div>
     </>
   )
