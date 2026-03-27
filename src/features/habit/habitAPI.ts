@@ -1,3 +1,4 @@
+
 const API_URL = import.meta.env.VITE_API_URL;
 // Peticion o consulta de los habitos con token
 export const fetchHabits = async (token:string) => {
@@ -35,5 +36,5 @@ export const fetchAddHabit = async (token:string, title:string, description:stri
     if (!response.ok) {
         throw new Error("Failed to fetch habits");
     }
-    return response;
+    return response.json();
 };
