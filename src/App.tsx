@@ -22,7 +22,7 @@ function App() {
     if (token) {
       dispatch(fetchHabitsThunk(token.toString()));
     }
-  }, [dispatch]);
+  }, [dispatch, user]);
   const handleLogin = () => {
     dispatch(fetchLoginUserThunk({ username, password}));
   };
