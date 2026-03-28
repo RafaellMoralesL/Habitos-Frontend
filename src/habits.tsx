@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { markAsDoneThunk, fetchHabitsThunk, fetchAddHabitThunk} from './features/habit/habitSlice';
+import { markAsDoneThunk,  fetchAddHabitThunk} from './features/habit/habitSlice';
 import type { RootState, AppDispatch } from "./store";
 
 type Habit = {
