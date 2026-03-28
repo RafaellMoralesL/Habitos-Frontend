@@ -15,9 +15,11 @@ function App() {
 
   useEffect(() => {
     const token = getCookie('habitToken');
-    console.log("Token from cookie", token);
+    console.log("Token from cookie", token, "user", user);
     if (token) {
       dispatch(addUser(token));
+    }
+    if (token) {
       dispatch(fetchHabitsThunk(token.toString()));
     }
   }, [dispatch]);
