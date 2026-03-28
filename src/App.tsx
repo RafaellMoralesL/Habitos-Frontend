@@ -5,15 +5,7 @@ import { fetchHabitsThunk } from "./features/habit/habitSlice";
 import { addUser, fetchRegisterUserThunk, fetchLoginUserThunk, } from './features/user/userSlice';
 import type {RootState, AppDispatch } from './store';
 import Habits from './habits';
-
-const getCookieValue = (name: string): string | null => {
-  if (typeof document === 'undefined') return null;
-    const value = `; ${document.cookie}`;
-
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
-    return null;
-};
+import {getCookie} from 'cookies-next';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,15 +14,13 @@ function App() {
     const [password, setPassword] = useState("");
 
   useEffect(() => {
-    const token = getCookieValue('habitToken');
+    const token = getCookie('habitToken');
     console.log("Token from cookie", token, "user:", user);
     if (token && !user) {
       dispatch(addUser(token));
     }
-    const tokenToUse = token || user;
-
-    if (tokenToUse) {
-      dispatch(fetchHabitsThunk(tokenToUse.toString()));
+    if (token) {
+      dispatch(fetchHabitsThunk(token.toString()));
     }
   }, [dispatch, user]);
   const handleLogin = () => {
