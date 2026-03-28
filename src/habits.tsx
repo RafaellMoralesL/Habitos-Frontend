@@ -30,8 +30,7 @@ export default function Habits() {
     const handleMarkAsDone = async (habitId: string) => {
         if (user) {
             await dispatch(markAsDoneThunk({ habitId, token: user.toString() })).unwrap();
-            
-            dispatch(fetchHabitsThunk(user.toString()));
+            //Evitar que sobreescriba el Slice con el response del markAsDone
         }
     };
 
