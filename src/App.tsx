@@ -8,8 +8,11 @@ import Habits from './habits';
 
 const getCookieValue = (name: string): string | null => {
   if (typeof document === 'undefined') return null;
-    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    return match ? match[2] : null;
+    const value = `; ${document.cookie}`;
+
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
 };
 
 function App() {
@@ -24,8 +27,10 @@ function App() {
     if (token && !user) {
       dispatch(addUser(token));
     }
-    if (token) {
-      dispatch(fetchHabitsThunk(token.toString()));
+    const tokenToUse = token || user;
+
+    if (tokenToUse) {
+      dispatch(fetchHabitsThunk(tokenToUse.toString()));
     }
   }, [dispatch, user]);
   const handleLogin = () => {
