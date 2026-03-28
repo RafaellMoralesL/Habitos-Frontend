@@ -39,8 +39,7 @@ export default function Habits() {
         if (title && description && user) {
             const token = user.toString();
             await dispatch(fetchAddHabitThunk({ token, title, description })).unwrap();
-            // Solo hacer fetch después de que se agregó exitosamente
-            dispatch(fetchHabitsThunk(token));
+            //Evitar que sobreescriba el Slice con el response del addHabit
             setTitle('');
             setDescription('');
         }
