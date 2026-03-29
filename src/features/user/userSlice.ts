@@ -71,8 +71,8 @@ const userSlice = createSlice({
                 alert('No es posible iniciar sesión en este momento');
             }).addCase(fetchLoginUserThunk.fulfilled, (state, action) => {
                 state.status = "sucess"
-                state.user = action.payload;
-                state.error = action.payload as string;
+                state.user = { token: action.payload };
+                state.error = null;
             })
         }
 });

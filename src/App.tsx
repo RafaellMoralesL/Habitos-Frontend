@@ -14,7 +14,21 @@ function App() {
     const [password, setPassword] = useState("");
 
   useEffect(() => {
+    // --
+    console.log("Cookies (document.cookie):", document.cookie);
+   //   --
     const token = getCookie('habitToken');
+    // --
+    console.log("Token con getCookie:", token);
+    console.log("Tipo de dato:" + typeof token);
+    // --
+    if (token && typeof token === "string") {
+    console.log("Cookie encontrada:", token.length);
+    console.log("Valor: ", token.substring(0, 20));
+    } else {
+    console.log("No se encontró la cookie 'habitToken'");
+    }
+
     console.log("Token from cookie", token, "user:", user);
     if (token && !user) {
       dispatch(addUser(token));
