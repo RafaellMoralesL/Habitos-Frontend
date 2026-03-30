@@ -9,7 +9,7 @@ import { getCookie } from 'cookies-next';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const habits = useSelector((state: RootState) => state.habits.habits);
+    const habits = useSelector((state: RootState) => state.habits.habits);
     const user = useSelector((state: RootState) => state.user.user);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

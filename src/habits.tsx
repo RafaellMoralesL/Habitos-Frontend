@@ -16,7 +16,7 @@ type Habit = {
 type HabitsProps = {
     habits: Habit[];    
 }
-const handleMarkAsDone = (habitId: string, dispatch: AppDispatch,  token: string) => {
+const handleMarkAsDone = (habitId: string, dispatch: AppDispatch, token: string) => {
      dispatch(markAsDoneThunk({ habitId, token }));
     if (token) {
         dispatch(fetchHabitsThunk(token));

@@ -24,7 +24,7 @@ const initialState: userState = {
 export const fetchRegisterUserThunk = createAsyncThunk("user/fetchRegisterUser", async ({username, password}: userThunk, {rejectWithValue}) => {
     const response = await fetchRegisterUser(username, password);
     const responseJson = await response.json();
-
+    console.log(responseJson.message.toString());
     if (!response.ok) {
         return rejectWithValue("Failed to register user");
     }else if(responseJson.message.toString() === "Usuario registrado correctamente"){
@@ -71,8 +71,8 @@ const userSlice = createSlice({
                 alert('No es posible iniciar sesión en este momento');
             }).addCase(fetchLoginUserThunk.fulfilled, (state, action) => {
                 state.status = "sucess"
-                state.user = { token: action.payload };
-                state.error = null;
+                state.user = action.payload;
+                state.error = action.payload as string;
             })
         }
 });
