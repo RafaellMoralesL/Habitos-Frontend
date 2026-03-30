@@ -1,11 +1,11 @@
 
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { markAsDoneThunk,  fetchAddHabitThunk} from './features/habit/habitSlice';
+import { markAsDoneThunk,  fetchAddHabitThunk, fetchHabitsThunk} from './features/habit/habitSlice';
 import type { RootState, AppDispatch } from "./store";
 
 type Habit = {
-    _id: string;
+    _id: string; 
     title: string;
     description: string;
     createdAt: string;
@@ -22,23 +22,29 @@ export default function Habits() {
     const user = useSelector((state: RootState) => state.user.user);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+
+    useEffect(() => {
+        if (user?.token) {
+            dispatch(fetchHabitsThunk(user.token));
+        }
+        }, [dispatch, user]);
     
     const calculateProgress = (days: number): number => {
         return Math.min((days / 66) * 100, 100);
     };
 
     const handleMarkAsDone = async (habitId: string) => {
-        if (user) {
-            const token = user?.token;
-            await dispatch(markAsDoneThunk({ habitId, token })).unwrap();
+        if (user?.token) {
+
+            await dispatch(markAsDoneThunk({ habitId, token: user.token })).unwrap();
             //Evitar que sobreescriba el Slice con el response del markAsDone
         }
     };
 
     const handleAddHabit = async () => {
-        if (title && description && user) {
-            const token = user?.token;
-            await dispatch(fetchAddHabitThunk({ token, title, description })).unwrap();
+        if (title && description && user?.token) {
+
+            await dispatch(fetchAddHabitThunk({ token: user.token, title, description })).unwrap();
             //Evitar que sobreescriba el Slice con el response del addHabit
             setTitle('');
             setDescription('');
