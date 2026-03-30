@@ -2,20 +2,26 @@ import './App.css'
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHabitsThunk } from "./features/habit/habitSlice";
-import { fetchRegisterUserThunk, fetchLoginUserThunk, } from './features/user/userSlice';
+import { addUser, fetchRegisterUserThunk, fetchLoginUserThunk, } from './features/user/userSlice';
 import type {RootState, AppDispatch } from './store';
 import Habits from './habits';
+import { getCookie } from 'cookies-next';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
+  const habits = useSelector((state: RootState) => state.habits.habits);
     const user = useSelector((state: RootState) => state.user.user);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
   useEffect(() => {
-  
-    if(user?.token){
-      dispatch(fetchHabitsThunk(user.token));
+    const token = getCookie('habitToken');
+    console.log("Token from cookie", token);
+    if (token) {
+      dispatch(addUser(token));
+    }
+    if (user) {
+      dispatch(fetchHabitsThunk(user.toString()));
     }
   }, [dispatch, user]);
   const handleLogin = () => {
@@ -65,7 +71,7 @@ function App() {
                 </div>
               </div>
         )}
-        {user ? <Habits /> :null}
+        {user && <Habits habits={habits} />}
   </div>
     </>
   )

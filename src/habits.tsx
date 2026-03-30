@@ -1,11 +1,10 @@
-
-import { useState, useEffect} from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { markAsDoneThunk,  fetchAddHabitThunk, fetchHabitsThunk} from './features/habit/habitSlice';
+import { markAsDoneThunk, fetchHabitsThunk, fetchAddHabitThunk} from './features/habit/habitSlice';
 import type { RootState, AppDispatch } from "./store";
 
 type Habit = {
-    _id: string; 
+    _id: string;
     title: string;
     description: string;
     createdAt: string;
@@ -14,40 +13,33 @@ type Habit = {
     lastUpdate: Date;
 }
 
-export default function Habits() {
+type HabitsProps = {
+    habits: Habit[];    
+}
+const handleMarkAsDone = (habitId: string, dispatch: AppDispatch,  token: string) => {
+     dispatch(markAsDoneThunk({ habitId, token }));
+    if (token) {
+        dispatch(fetchHabitsThunk(token));
+    }
+}
+
+export default function Habits({habits}: HabitsProps) {
     const dispatch = useDispatch<AppDispatch>();
-    // Usar Redux directamente en vez de props
-    const habits = useSelector((state: RootState) => state.habits.habits);
     const { status, error } = useSelector((state: RootState) => state.habits);
     const user = useSelector((state: RootState) => state.user.user);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-
-    useEffect(() => {
-        if (user?.token) {
-            dispatch(fetchHabitsThunk(user.token));
-        }
-        }, [dispatch, user]);
     
     const calculateProgress = (days: number): number => {
         return Math.min((days / 66) * 100, 100);
     };
 
-    const handleMarkAsDone = async (habitId: string) => {
-        if (user?.token) {
-
-            await dispatch(markAsDoneThunk({ habitId, token: user.token })).unwrap();
-            //Evitar que sobreescriba el Slice con el response del markAsDone
-        }
-    };
-
-    const handleAddHabit = async () => {
-        if (title && description && user?.token) {
-
-            await dispatch(fetchAddHabitThunk({ token: user.token, title, description })).unwrap();
-            //Evitar que sobreescriba el Slice con el response del addHabit
+    const handleAddHabit = () => {
+        if (title && description) {
+            dispatch(fetchAddHabitThunk({ token: user ? user.toString() : '', title, description}));
             setTitle('');
             setDescription('');
+            dispatch(fetchHabitsThunk(user ? user.toString() : ''));
         }
     };
     return (
@@ -61,7 +53,7 @@ export default function Habits() {
                             <div className="flex items-center space-x-2">
                                 <progress className="w-24" value={calculateProgress(habit.days)} max="100"></progress>
                                 <button className="px-2 py-1 text-sm text-white bg-blue-500 rounded" 
-                                    onClick={() => handleMarkAsDone(habit._id)}>
+                                    onClick={() => handleMarkAsDone(habit._id, dispatch, user ? user.toString() : '')}>
                                     {status[habit._id] === "loading" ? "Processing" : "Mark as Done"}
                                 </button>
                                 {status[habit._id] === "failed" && <span className="text-red-500">{error[habit._id]}</span>}
