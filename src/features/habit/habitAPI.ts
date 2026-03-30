@@ -3,7 +3,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 // Peticion o consulta de los habitos con token
 export const fetchHabits = async (token:string) => {
     const response = await fetch(`${API_URL}/habits`, {
-        headers: {Authorization: 'Bearer ' +token }
+        headers: {Authorization: 'Bearer ' +token },
+        credentials: 'include'
     });
     if (!response.ok) {
         throw new Error("Failed to fetch habits");
@@ -16,7 +17,8 @@ export const fetchHabits = async (token:string) => {
 export const markAsDone = async (habitId: string, token: string) => {
     const response = await fetch(`${API_URL}/habits/markasdone/${habitId}`, {
         method: "PATCH",
-        headers: {Authorization: 'Bearer '+token }
+        headers: {Authorization: 'Bearer '+token },
+        credentials: 'include'
     });
     return response.json();
 };
@@ -28,6 +30,7 @@ export const fetchAddHabit = async (token:string, title:string, description:stri
         headers: {Authorization: 'Bearer '+token,
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
             "title": title,
             "description": description
