@@ -2,10 +2,9 @@ import './App.css'
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHabitsThunk } from "./features/habit/habitSlice";
-import { addUser, fetchRegisterUserThunk, fetchLoginUserThunk, } from './features/user/userSlice';
+import { fetchRegisterUserThunk, fetchLoginUserThunk, } from './features/user/userSlice';
 import type {RootState, AppDispatch } from './store';
 import Habits from './habits';
-import {getCookie} from 'cookies-next';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,26 +13,8 @@ function App() {
     const [password, setPassword] = useState("");
 
   useEffect(() => {
-    // --
-    console.log("Cookies (document.cookie):", document.cookie);
-   //   --
-    const token = getCookie('habitToken');
-    // --
-    console.log("Token con getCookie:", token);
-    console.log("Tipo de dato:" + typeof token);
-    // --
-    if (token && typeof token === "string") {
-    console.log("Cookie encontrada:", token.length);
-    console.log("Valor: ", token.substring(0, 20));
-    } else {
-    console.log("No se encontró la cookie 'habitToken'");
-    }
-
-    console.log("Token from cookie", token, "user:", user);
-    if (token && !user) {
-      dispatch(addUser(token));
-    }
-    if (user?.token) {
+  
+    if(user?.token){
       dispatch(fetchHabitsThunk(user.token));
     }
   }, [dispatch, user]);
