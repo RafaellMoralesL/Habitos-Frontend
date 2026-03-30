@@ -33,8 +33,8 @@ function App() {
     if (token && !user) {
       dispatch(addUser(token));
     }
-    if (token) {
-      dispatch(fetchHabitsThunk(token.toString()));
+    if (user?.token) {
+      dispatch(fetchHabitsThunk(user.token));
     }
   }, [dispatch, user]);
   const handleLogin = () => {

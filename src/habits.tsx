@@ -29,14 +29,15 @@ export default function Habits() {
 
     const handleMarkAsDone = async (habitId: string) => {
         if (user) {
-            await dispatch(markAsDoneThunk({ habitId, token: user.toString() })).unwrap();
+            const token = user?.token;
+            await dispatch(markAsDoneThunk({ habitId, token })).unwrap();
             //Evitar que sobreescriba el Slice con el response del markAsDone
         }
     };
 
     const handleAddHabit = async () => {
         if (title && description && user) {
-            const token = user.toString();
+            const token = user?.token;
             await dispatch(fetchAddHabitThunk({ token, title, description })).unwrap();
             //Evitar que sobreescriba el Slice con el response del addHabit
             setTitle('');
